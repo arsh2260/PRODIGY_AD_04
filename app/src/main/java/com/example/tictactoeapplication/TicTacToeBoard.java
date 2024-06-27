@@ -65,9 +65,11 @@ public class TicTacToeBoard extends View {
         paint.setStyle(Paint.Style.STROKE);
         paint.setAntiAlias(true);
         drawGameBoard(canvas);
-
-
         drawMarkers(canvas);
+        if (winningLine){
+            paint.setColor(winningLineColor);
+            drawWinningLine(canvas);
+        }
 
 
 
@@ -177,6 +179,46 @@ public class TicTacToeBoard extends View {
                 (float) ((row*cellSize + cellSize) - cellSize*0.2),
                 paint);
 
+    }
+
+    private void drawHorizontalLine(Canvas canvas, int row , int col){
+        canvas.drawLine(col,row*cellSize + cellSize/2,
+                cellSize*3,row* cellSize + cellSize/2,
+                paint);
+    }
+
+    private void drawVerticalLine(Canvas canvas, int row , int col){
+        canvas.drawLine(col*cellSize + (float) cellSize /2,row,
+                col* cellSize + (float) cellSize /2,cellSize*3,
+                paint);
+    }
+
+    private void drawDiagonalLinePos(Canvas canvas){
+        canvas.drawLine(0,cellSize*3,cellSize*3,0,paint);
+    }
+
+    private void drawDiagonalLineNeg(Canvas canvas){
+        canvas.drawLine(0,0,cellSize*3,cellSize*3,paint);
+    }
+
+    private void drawWinningLine(Canvas canvas){
+        int row = game.getWinType()[0];
+        int col = game.getWinType()[1];
+        switch (game.getWinType()[2]){
+            case 1:
+                drawHorizontalLine(canvas,row,col);
+                break;
+            case 2:
+                drawVerticalLine(canvas,row,col);
+                break;
+            case 3:
+                drawDiagonalLineNeg(canvas);
+                break;
+            case 4:
+                drawDiagonalLinePos(canvas);
+                break;
+
+        }
     }
 
     public void setUpGame(Button playAgain, Button home, TextView playerDisplay, String[] names){
